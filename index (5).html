@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speaking Tasks Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+                         "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at top, #4f46e5 0, #020617 50%, #000 100%);
+            color: #e5e7eb;
+            padding: 16px;
+        }
+
+        .shell {
+            max-width: 760px;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.96);
+            border-radius: 22px;
+            padding: 22px 20px 26px;
+            box-shadow: 0 26px 60px rgba(0, 0, 0, 0.75);
+            border: 1px solid rgba(129, 140, 248, 0.4);
+        }
+
+        h1 {
+            font-size: 1.7rem;
+            letter-spacing: 0.04em;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            font-size: 0.92rem;
+            color: #9ca3af;
+            margin-bottom: 14px;
+        }
+
+        .tagline {
+            font-size: 0.9rem;
+            background: rgba(15, 118, 110, 0.12);
+            border-radius: 999px;
+            padding: 6px 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .tagline span.icon {
+            font-size: 1rem;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 12px;
+        }
+
+        @media (min-width: 640px) {
+            .card-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        .task-card {
+            border-radius: 16px;
+            background: radial-gradient(circle at top left, rgba(79, 70, 229, 0.35), rgba(15, 23, 42, 0.98) 65%);
+            padding: 14px 14px 16px;
+            border: 1px solid rgba(129, 140, 248, 0.6);
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            box-shadow: 0 16px 40px rgba(15, 23, 42, 0.8);
+            transition: transform 0.08s ease, box-shadow 0.12s ease, border 0.12s ease;
+        }
+
+        .task-card:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 22px 46px rgba(15, 23, 42, 0.95);
+            border-color: #a5b4fc;
+        }
+
+        .task-title {
+            font-size: 1.02rem;
+            font-weight: 600;
+        }
+
+        .task-meta {
+            font-size: 0.82rem;
+            color: #cbd5f5;
+        }
+
+        .task-desc {
+            font-size: 0.86rem;
+            color: #e5e7eb;
+        }
+
+        .task-tag {
+            font-size: 0.78rem;
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(148, 163, 184, 0.7);
+            align-self: flex-start;
+            margin-top: 4px;
+        }
+
+        .footer {
+            margin-top: 18px;
+            font-size: 0.78rem;
+            color: #9ca3af;
+        }
+    </style>
+</head>
+<body>
+    <div class="shell">
+        <header>
+            <h1>Speaking Tasks Portal</h1>
+            <p class="subtitle">
+                EARTHRISE &middot; One-on-one tutor tasks with Japanese support
+            </p>
+            <div class="tagline">
+                <span class="icon">💬</span>
+                <span>短くてOK。1〜2文からスピーキングに慣れていこう。</span>
+            </div>
+        </header>
+
+        <main class="card-grid">
+            <a class="task-card" href="day3_hometown.html">
+                <div class="task-title">Day 3: Hometown</div>
+                <div class="task-meta">EARTHRISE pp. 22–23 &middot; Hometown / Weather / Food</div>
+                <p class="task-desc">
+                    出身地・天気・食べ物・おすすめスポットなどを、やさしい英語と日本語サポートで話すタスク。
+                </p>
+                <div class="task-tag">日本語サポート付き</div>
+            </a>
+
+            <!-- Placeholder for future tasks -->
+            <div class="task-card" style="opacity: 0.5; cursor: default; border-style: dashed;">
+                <div class="task-title">Coming Soon</div>
+                <div class="task-meta">More speaking tasks will appear here.</div>
+                <p class="task-desc">
+                    次回以降のDayタスクや別ユニットが増えたら、ここにカードを追加してください。
+                </p>
+                <div class="task-tag">準備中</div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            GitHub Pages のルートに <code>index.html</code> としてアップロードしてください。
+            <br>同じフォルダに <code>day3_hometown.html</code> を置けばリンクが動きます。
+        </footer>
+    </div>
+</body>
+</html>

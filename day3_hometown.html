@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 3 Task: Hometown - Student Friendly Version</title>
+    <style>
+        :root {
+            --bg-light: #f4f4f8;
+            --bg-card-light: #ffffff;
+            --text-main-light: #222;
+            --text-soft-light: #555;
+            --accent: #4f46e5;
+            --accent-soft: rgba(79, 70, 229, 0.08);
+            --shadow-light: 0 18px 45px rgba(15, 23, 42, 0.15);
+
+            --bg-dark: #020617;
+            --bg-card-dark: #0b1120;
+            --text-main-dark: #e5e7eb;
+            --text-soft-dark: #9ca3af;
+            --shadow-dark: 0 18px 45px rgba(15, 23, 42, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+                         "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+            line-height: 1.8;
+            background: var(--bg-light);
+            color: var(--text-main-light);
+            min-height: 100vh;
+            padding: 20px 12px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark {
+            background: radial-gradient(circle at top, #1f2937 0, #020617 40%, #000 100%);
+            color: var(--text-main-dark);
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            background: var(--bg-card-light);
+            border-radius: 20px;
+            box-shadow: var(--shadow-light);
+            padding: 24px 18px 28px;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        body.dark .container {
+            background: linear-gradient(145deg, #020617 0%, #020617 40%, #030712 100%);
+            box-shadow: var(--shadow-dark);
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h1 {
+            font-size: 1.6rem;
+            letter-spacing: 0.03em;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            color: var(--text-soft-light);
+        }
+
+        body.dark .subtitle {
+            color: var(--text-soft-dark);
+        }
+
+        .tagline {
+            font-size: 0.92rem;
+            padding: 8px 10px;
+            border-radius: 12px;
+            background: var(--accent-soft);
+            color: #1e293b;
+        }
+
+        body.dark .tagline {
+            background: rgba(129, 140, 248, 0.18);
+            color: #e5e7eb;
+        }
+
+        .toggle-btn {
+            border: none;
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #0f172a;
+            color: #e5e7eb;
+            box-shadow: 0 10px 26px rgba(15, 23, 42, 0.6);
+            transition: transform 0.1s ease, box-shadow 0.2s ease, background 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .toggle-btn span.icon {
+            font-size: 1rem;
+        }
+
+        .toggle-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 16px 30px rgba(15, 23, 42, 0.7);
+        }
+
+        body.dark .toggle-btn {
+            background: #e5e7eb;
+            color: #020617;
+            box-shadow: 0 10px 26px rgba(15, 23, 42, 0.8);
+        }
+
+        .note {
+            font-size: 0.85rem;
+            color: var(--text-soft-light);
+            margin-bottom: 18px;
+        }
+
+        body.dark .note {
+            color: var(--text-soft-dark);
+        }
+
+        .note strong {
+            font-weight: 600;
+        }
+
+        .qa-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .qa-card {
+            border-radius: 16px;
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            background: radial-gradient(circle at top left, rgba(79, 70, 229, 0.06), transparent 60%);
+            overflow: hidden;
+            cursor: pointer;
+            transition: border 0.2s ease, background 0.2s ease, transform 0.06s ease;
+        }
+
+        body.dark .qa-card {
+            border-color: rgba(148, 163, 184, 0.5);
+            background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.16), rgba(15, 23, 42, 0.98) 65%);
+        }
+
+        .qa-card:active {
+            transform: scale(0.995);
+        }
+
+        .qa-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 13px 14px 10px;
+        }
+
+        .badge {
+            min-width: 32px;
+            height: 32px;
+            border-radius: 999px;
+            background: rgba(79, 70, 229, 0.12);
+            color: #4338ca;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.88rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        body.dark .badge {
+            background: rgba(129, 140, 248, 0.18);
+            color: #a5b4fc;
+        }
+
+        .qa-title-block {
+            flex: 1;
+        }
+
+        .qa-title {
+            font-size: 1.0rem;
+            font-weight: 600;
+        }
+
+        .qa-title small {
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: var(--text-soft-light);
+            display: block;
+            margin-top: 2px;
+        }
+
+        body.dark .qa-title small {
+            color: var(--text-soft-dark);
+        }
+
+        .chevron {
+            font-size: 0.9rem;
+            color: var(--text-soft-light);
+            margin-left: 6px;
+            transition: transform 0.16s ease;
+        }
+
+        body.dark .chevron {
+            color: var(--text-soft-dark);
+        }
+
+        .qa-card.open .chevron {
+            transform: rotate(90deg);
+        }
+
+        .qa-content {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 14px;
+            transition: max-height 0.25s ease;
+        }
+
+        .qa-card.open .qa-content {
+            padding-bottom: 12px;
+        }
+
+        .content-inner {
+            padding-top: 4px;
+            padding-bottom: 2px;
+            display: grid;
+            gap: 8px;
+        }
+
+        .section-label {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #4f46e5;
+            font-weight: 600;
+        }
+
+        body.dark .section-label {
+            color: #a5b4fc;
+        }
+
+        .en {
+            font-size: 0.92rem;
+            font-weight: 500;
+        }
+
+        .jp {
+            font-size: 0.86rem;
+            color: var(--text-soft-light);
+        }
+
+        body.dark .jp {
+            color: var(--text-soft-dark);
+        }
+
+        .frame-box, .phrase-box {
+            border-radius: 10px;
+            padding: 8px 10px;
+            font-size: 0.88rem;
+            background: rgba(148, 163, 184, 0.12);
+        }
+
+        body.dark .frame-box,
+        body.dark .phrase-box {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(148, 163, 184, 0.4);
+        }
+
+        .example-en {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .example-jp {
+            font-size: 0.86rem;
+            color: var(--text-soft-light);
+        }
+
+        body.dark .example-jp {
+            color: var(--text-soft-dark);
+        }
+
+        ul {
+            padding-left: 18px;
+        }
+
+        li {
+            font-size: 0.88rem;
+            margin-bottom: 3px;
+        }
+
+        .footer-note {
+            margin-top: 18px;
+            font-size: 0.8rem;
+            color: var(--text-soft-light);
+            border-top: 1px dashed rgba(148, 163, 184, 0.6);
+            padding-top: 10px;
+        }
+
+        body.dark .footer-note {
+            color: var(--text-soft-dark);
+            border-color: rgba(148, 163, 184, 0.8);
+        }
+
+        .footer-note em {
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        @media (min-width: 720px) {
+            body {
+                padding: 32px;
+            }
+            .container {
+                padding: 26px 24px 30px;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="title-row">
+                <div>
+                    <h1>Day 3 Task: Hometown</h1>
+                    <p class="subtitle">
+                        EARTHRISE Textbook pp. 22–23 &middot; やさしく話せるスピーキング練習
+                    </p>
+                </div>
+                <button class="toggle-btn" id="themeToggle">
+                    <span class="icon">🌙</span>
+                    <span class="label">Dark</span>
+                </button>
+            </div>
+            <p class="tagline">
+                💬 短くてOK。<b>完璧な英語はいりません。</b> 1文〜2文で、ゆっくりハッキリ話してみよう。
+            </p>
+        </header>
+
+        <p class="note">
+            🔍 <strong>使い方：</strong> カードをタップ / クリックして中身をひらいてください。  
+            上に英語、下に日本語が書いてあります。
+        </p>
+
+        <main class="qa-list">
+            <!-- Q1 -->
+            <section class="qa-card">
+                <div class="qa-header">
+                    <div class="badge">Q1</div>
+                    <div class="qa-title-block">
+                        <div class="qa-title">
+                            Where is your hometown?
+                            <small>あなたの出身地はどこですか？</small>
+                        </div>
+                    </div>
+                    <div class="chevron">▶</div>
+                </div>
+                <div class="qa-content">
+                    <div class="content-inner">
+                        <div>
+                            <div class="section-label">Explanation / 説明</div>
+                            <p class="en">
+                                Just say the name of the place. Short is OK.
+                            </p>
+                            <p class="jp">
+                                場所の名前を言うだけでOKです。短い文で大丈夫です。
+                            </p>
+                        </div>
+
+                        <div class="frame-box">
+                            <div class="section-label">Sentence Frame / 文の型</div>
+                            <p class="en">My hometown is <b>Akita</b>.</p>
+                            <p class="jp">私の出身は<b>秋田</b>です。</p>
+                        </div>
+
+                        <div>
+                            <div class="section-label">More Examples / ほかの例</div>
+                            <p class="example-en">My hometown is <b>Saitama</b>.</p>
+                            <p class="example-jp">私の出身は<b>埼玉</b>です。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Q2 -->
+            <section class="qa-card">
+                <div class="qa-header">
+                    <div class="badge">Q2</div>
+                    <div class="qa-title-block">
+                        <div class="qa-title">
+                            What is your hometown known for?
+                            <small>あなたの地元は何で有名ですか？</small>
+                        </div>
+                    </div>
+                    <div class="chevron">▶</div>
+                </div>
+                <div class="qa-content">
+                    <div class="content-inner">
+                        <div>
+                            <div class="section-label">Explanation / 説明</div>
+                            <p class="en">
+                                Say one thing (food, place, event, etc.) your town is famous for.
+                            </p>
+                            <p class="jp">
+                                地元が「食べ物・場所・イベント」など、何で有名かを1つ言いましょう。
+                            </p>
+                        </div>
+
+                        <div class="phrase-box">
+                            <div class="section-label">Useful Phrases / 便利な言い方</div>
+                            <ul>
+                                <li>
+                                    <span class="en">It is known for <b>____</b>.</span><br>
+                                    <span class="jp">○○で有名です。</span>
+                                </li>
+                                <li>
+                                    <span class="en">Many people visit because <b>____</b>.</span><br>
+                                    <span class="jp">多くの人が○○のために訪れます。</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="frame-box">
+                            <div class="section-label">Model Answer / 模範例</div>
+                            <p class="example-en">
+                                It is known for <b>rice and hot springs</b>.
+                            </p>
+                            <p class="example-jp">
+                                お米と温泉で有名です。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Q3 -->
+            <section class="qa-card">
+                <div class="qa-header">
+                    <div class="badge">Q3</div>
+                    <div class="qa-title-block">
+                        <div class="qa-title">
+                            Is it a big city or a small town? What places do you like?
+                            <small>大きな都市ですか？小さな町ですか？好きな場所はどこですか？</small>
+                        </div>
+                    </div>
+                    <div class="chevron">▶</div>
+                </div>
+                <div class="qa-content">
+                    <div class="content-inner">
+                        <div>
+                            <div class="section-label">Explanation / 説明</div>
+                            <p class="en">
+                                First, say if it is big or small. Then say one favorite place.
+                            </p>
+                            <p class="jp">
+                                まず「大きい／小さい」を言ってから、好きな場所を1つ言いましょう。
+                            </p>
+                        </div>
+
+                        <div class="phrase-box">
+                            <div class="section-label">Key Words / キー単語</div>
+                            <ul>
+                                <li>
+                                    <span class="en">a big city / a small town</span><br>
+                                    <span class="jp">大きな都市 / 小さな町</span>
+                                </li>
+                                <li>
+                                    <span class="en">my favorite place</span><br>
+                                    <span class="jp">お気に入りの場所</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="frame-box">
+                            <div class="section-label">Sentence Frame / 文の型</div>
+                            <p class="example-en">
+                                It is a <b>small town</b>. I like <b>the river</b> because it is <b>quiet</b>.
+                            </p>
+                            <p class="example-jp">
+                                小さな町です。静かなので川が好きです。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Q4 -->
+            <section class="qa-card">
+                <div class="qa-header">
+                    <div class="badge">Q4</div>
+                    <div class="qa-title-block">
+                        <div class="qa-title">
+                            What is the weather like there?
+                            <small>地元の天気はどんな感じですか？</small>
+                        </div>
+                    </div>
+                    <div class="chevron">▶</div>
+                </div>
+                <div class="qa-content">
+                    <div class="content-inner">
+                        <div>
+                            <div class="section-label">Explanation / 説明</div>
+                            <p class="en">
+                                Talk about the weather in general. You can focus on one season.
+                            </p>
+                            <p class="jp">
+                                全体的な天気の様子を話します。1つの季節にしぼってもOKです。
+                            </p>
+                        </div>
+
+                        <div class="phrase-box">
+                            <div class="section-label">Useful Words / よく使う単語</div>
+                            <ul>
+                                <li>hot / cold / warm / cool</li>
+                                <li>rainy / snowy / windy</li>
+                                <li>humid（湿気が多い）</li>
+                            </ul>
+                        </div>
+
+                        <div class="frame-box">
+                            <div class="section-label">Model Answer / 模範例</div>
+                            <p class="example-en">
+                                It is very <b>cold and snowy</b> in winter.
+                            </p>
+                            <p class="example-jp">
+                                冬はとても<b>寒くて雪が多い</b>です。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Q5 -->
+            <section class="qa-card">
+                <div class="qa-header">
+                    <div class="badge">Q5</div>
+                    <div class="qa-title-block">
+                        <div class="qa-title">
+                            What kind of food is popular there?
+                            <small>どんな食べ物が人気ですか？</small>
+                        </div>
+                    </div>
+                    <div class="chevron">▶</div>
+                </div>
+                <div class="qa-content">
+                    <div class="content-inner">
+                        <div>
+                            <div class="section-label">Explanation / 説明</div>
+                            <p class="en">
+                                Choose one famous or popular food from your hometown.
+                            </p>
+                            <p class="jp">
+                                地元で有名・人気な食べ物を1つ選んで話します。
+                            </p>
+                        </div>
+
+                        <div class="frame-box">
+                            <div class="section-label">Sentence Frame / 文の型</div>
+                            <p class="example-en">
+                                Popular food is <b>kiritanpo</b>. It tastes <b>simple but delicious</b>.
+                            </p>
+                            <p class="example-jp">
+                                人気の食べ物は<b>きりたんぽ</b>です。味は<b>シンプルですがおいしい</b>です。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Q6 -->
+            <section class="qa-card">
+                <div class="qa-header">
+                    <div class="badge">Q6</div>
+                    <div class="qa-title-block">
+                        <div class="qa-title">
+                            Are there any interesting places to visit?
+                            <small>行くべきおもしろい場所はありますか？</small>
+                        </div>
+                    </div>
+                    <div class="chevron">▶</div>
+                </div>
+                <div class="qa-content">
+                    <div class="content-inner">
+                        <div>
+                            <div class="section-label">Explanation / 説明</div>
+                            <p class="en">
+                                Recommend one place. Imagine you are a guide.
+                            </p>
+                            <p class="jp">
+                                観光ガイドになったつもりで、1つ場所をおすすめします。
+                            </p>
+                        </div>
+
+                        <div class="phrase-box">
+                            <div class="section-label">Useful Phrase / 便利フレーズ</div>
+                            <p class="en">
+                                You should visit <b>___</b>. It is <b>___</b>.
+                            </p>
+                            <p class="jp">
+                                ○○に行くべきです。そこは○○です。
+                            </p>
+                        </div>
+
+                        <div class="frame-box">
+                            <div class="section-label">Model Answer / 模範例</div>
+                            <p class="example-en">
+                                You should visit <b>Lake Tazawa</b>. It is very <b>beautiful and quiet</b>.
+                            </p>
+                            <p class="example-jp">
+                                <b>田沢湖</b>に行くべきです。とても<b>美しくて静か</b>です。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Q7 -->
+            <section class="qa-card">
+                <div class="qa-header">
+                    <div class="badge">Q7</div>
+                    <div class="qa-title-block">
+                        <div class="qa-title">
+                            What do you like most about your hometown?
+                            <small>地元の一番好きなところは何ですか？</small>
+                        </div>
+                    </div>
+                    <div class="chevron">▶</div>
+                </div>
+                <div class="qa-content">
+                    <div class="content-inner">
+                        <div>
+                            <div class="section-label">Explanation / 説明</div>
+                            <p class="en">
+                                Choose one thing you really like: nature, people, food, atmosphere, etc.
+                            </p>
+                            <p class="jp">
+                                自然・人・食べ物・雰囲気など、「一番好きなポイント」を1つ選びます。
+                            </p>
+                        </div>
+
+                        <div class="phrase-box">
+                            <div class="section-label">Key Ideas / アイデア例</div>
+                            <ul>
+                                <li>the nature（自然）</li>
+                                <li>the people（人柄）</li>
+                                <li>the food（食べ物）</li>
+                                <li>the calm atmosphere（落ち着いた雰囲気）</li>
+                            </ul>
+                        </div>
+
+                        <div class="frame-box">
+                            <div class="section-label">Model Answer / 模範例</div>
+                            <p class="example-en">
+                                I like the <b>people</b> the most. They are very <b>kind</b>.
+                            </p>
+                            <p class="example-jp">
+                                一番好きなのは<b>人</b>です。とても<b>優しい</b>です。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Q8 -->
+            <section class="qa-card">
+                <div class="qa-header">
+                    <div class="badge">Q8</div>
+                    <div class="qa-title-block">
+                        <div class="qa-title">
+                            Would you like to live there in the future? Why or why not?
+                            <small>将来、そこに住みたいですか？その理由は？</small>
+                        </div>
+                    </div>
+                    <div class="chevron">▶</div>
+                </div>
+                <div class="qa-content">
+                    <div class="content-inner">
+                        <div>
+                            <div class="section-label">Explanation / 説明</div>
+                            <p class="en">
+                                Answer <b>Yes</b> or <b>No</b>, then give a simple reason.
+                            </p>
+                            <p class="jp">
+                                まず<b>Yes</b>か<b>No</b>を答え、簡単に理由を1つ言いましょう。
+                            </p>
+                        </div>
+
+                        <div class="phrase-box">
+                            <div class="section-label">Sentence Frames / 文の型</div>
+                            <ul>
+                                <li>
+                                    <span class="en">Yes, because <b>___</b>.</span><br>
+                                    <span class="jp">はい。なぜなら○○だからです。</span>
+                                </li>
+                                <li>
+                                    <span class="en">No, because <b>___</b>.</span><br>
+                                    <span class="jp">いいえ。なぜなら○○だからです。</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="frame-box">
+                            <div class="section-label">Model Answer / 模範例</div>
+                            <p class="example-en">
+                                Yes, because it is <b>relaxing</b> and I like the <b>nature</b>.
+                            </p>
+                            <p class="example-jp">
+                                はい。とても<b>落ち着く</b>し、<b>自然</b>が好きだからです。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <p class="footer-note">
+            👂 <em>Teacher tip:</em> 生徒には「全部言えなくてOK、1文だけでもOK」と伝えておくと、
+            スピーキングへのハードルが下がります。
+        </p>
+    </div>
+
+    <script>
+        // Dark / Light toggle
+        const toggleBtn = document.getElementById('themeToggle');
+        const body = document.body;
+
+        function setTheme(isDark) {
+            if (isDark) {
+                body.classList.add('dark');
+                toggleBtn.querySelector('.icon').textContent = '☀️';
+                toggleBtn.querySelector('.label').textContent = 'Light';
+                localStorage.setItem('hometown_theme', 'dark');
+            } else {
+                body.classList.remove('dark');
+                toggleBtn.querySelector('.icon').textContent = '🌙';
+                toggleBtn.querySelector('.label').textContent = 'Dark';
+                localStorage.setItem('hometown_theme', 'light');
+            }
+        }
+
+        const saved = localStorage.getItem('hometown_theme');
+        if (saved === 'dark') {
+            setTheme(true);
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            setTheme(!body.classList.contains('dark'));
+        });
+
+        // Collapsible QA cards
+        const cards = document.querySelectorAll('.qa-card');
+        cards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (!card.classList.contains('open')) {
+                    cards.forEach(c => {
+                        if (c !== card) c.classList.remove('open');
+                    });
+                }
+                card.classList.toggle('open');
+
+                const content = card.querySelector('.qa-content');
+                if (card.classList.contains('open')) {
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                } else {
+                    content.style.maxHeight = 0;
+                }
+            });
+
+            const content = card.querySelector('.qa-content');
+            content.style.maxHeight = 0;
+        });
+    </script>
+</body>
+</html>
