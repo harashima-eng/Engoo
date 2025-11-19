@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engoo Conversation Flow Portal</title>
+    <style>
+        :root {
+            --bg-light: #eef2ff;
+            --bg-card-light: #ffffff;
+            --text-main-light: #0f172a;
+            --text-soft-light: #4b5563;
+            --accent: #4f46e5;
+            --shadow-light: 0 22px 55px rgba(15, 23, 42, 0.25);
+            --bg-dark: radial-gradient(circle at top, #1f2937 0, #020617 45%, #000 100%);
+            --bg-card-dark: #020617;
+            --text-main-dark: #e5e7eb;
+            --text-soft-dark: #9ca3af;
+            --shadow-dark: 0 24px 60px rgba(0, 0, 0, 0.85);
+        }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{
+            min-height:100vh;
+            padding:24px 14px 30px;
+            font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+            line-height:1.7;
+            background:var(--bg-light);
+            color:var(--text-main-light);
+            transition:background .3s ease,color .3s ease;
+        }
+        body.dark{
+            background:var(--bg-dark);
+            color:var(--text-main-dark);
+        }
+        .shell{max-width:1040px;margin:0 auto;}
+        .hero{
+            border-radius:24px;
+            padding:24px 20px 22px;
+            background:radial-gradient(circle at top left,rgba(79,70,229,.15),rgba(15,23,42,.92) 60%);
+            box-shadow:0 24px 65px rgba(15,23,42,.55);
+            color:#e5e7eb;
+            margin-bottom:22px;
+            position:relative;
+            overflow:hidden;
+        }
+        .hero-inner{position:relative;z-index:1;display:flex;flex-direction:column;gap:10px;}
+        .hero-top-row{display:flex;justify-content:space-between;align-items:center;gap:14px;}
+        h1{font-size:1.8rem;letter-spacing:.03em;}
+        .hero-sub{font-size:.92rem;opacity:.92;}
+        .hero-tagline{
+            font-size:.9rem;
+            padding:7px 10px;
+            border-radius:999px;
+            background:rgba(15,23,42,.7);
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            border:1px solid rgba(148,163,184,.6);
+        }
+        .hero-tagline .emoji{font-size:1.1rem;}
+        .toggle-btn{
+            border:none;
+            border-radius:999px;
+            padding:8px 14px;
+            font-size:.85rem;
+            cursor:pointer;
+            display:inline-flex;
+            align-items:center;
+            gap:6px;
+            background:rgba(15,23,42,.9);
+            color:#e5e7eb;
+        }
+        body.dark .toggle-btn{
+            background:#e5e7eb;
+            color:#020617;
+        }
+        .toggle-btn .icon{font-size:1rem;}
+        .hero-note{font-size:.8rem;opacity:.9;}
+        .hero-note b{font-weight:700;}
+        .grid{margin-top:20px;display:grid;gap:16px;}
+        @media(min-width:720px){
+            body{padding:34px 20px 40px;}
+            .hero{padding:26px 22px 24px;}
+            h1{font-size:2rem;}
+            .grid{grid-template-columns:repeat(3,minmax(0,1fr));}
+        }
+        .card{
+            border-radius:18px;
+            background:var(--bg-card-light);
+            box-shadow:var(--shadow-light);
+            padding:14px;
+            display:flex;
+            flex-direction:column;
+            gap:8px;
+            border:1px solid rgba(148,163,184,.35);
+        }
+        body.dark .card{
+            background:linear-gradient(145deg,#020617,#030712);
+            box-shadow:var(--shadow-dark);
+            border-color:rgba(148,163,184,.7);
+        }
+        .card-day-pill{
+            font-size:.8rem;
+            font-weight:700;
+            letter-spacing:.08em;
+            text-transform:uppercase;
+            padding:4px 10px;
+            border-radius:999px;
+            background:rgba(79,70,229,.08);
+            color:#4338ca;
+            display:inline-block;
+            margin-bottom:4px;
+        }
+        body.dark .card-day-pill{
+            background:rgba(79,70,229,.2);
+            color:#c7d2fe;
+        }
+        .card-topic{font-size:1rem;font-weight:600;}
+        .card-sub{font-size:.84rem;color:var(--text-soft-light);}
+        body.dark .card-sub{color:var(--text-soft-dark);}
+        .card-taglist{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px;}
+        .chip{
+            font-size:.72rem;
+            padding:2px 8px;
+            border-radius:999px;
+            background:#e5e7eb;
+            color:#374151;
+        }
+        body.dark .chip{
+            background:rgba(55,65,81,.9);
+            color:#e5e7eb;
+        }
+        .card-footer{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:8px;
+            margin-top:8px;
+        }
+        .card-level{font-size:.78rem;color:var(--text-soft-light);}
+        body.dark .card-level{color:var(--text-soft-dark);}
+        .card-link{
+            font-size:.86rem;
+            padding:6px 11px;
+            border-radius:999px;
+            border:1px solid rgba(79,70,229,.6);
+            background:rgba(79,70,229,.08);
+            color:#312e81;
+            text-decoration:none;
+            font-weight:600;
+            display:inline-flex;
+            align-items:center;
+            gap:6px;
+        }
+        body.dark .card-link{
+            border-color:rgba(165,180,252,.9);
+            background:rgba(55,65,81,.9);
+            color:#e0e7ff;
+        }
+        .card-link .icon{font-size:.95rem;}
+        .bottom-note{
+            margin-top:16px;
+            font-size:.8rem;
+            color:var(--text-soft-light);
+        }
+        body.dark .bottom-note{color:var(--text-soft-dark);}
+    </style>
+</head>
+<body>
+    <div class="shell">
+        <header class="hero">
+            <div class="hero-inner">
+                <div class="hero-top-row">
+                    <div>
+                        <h1>Engoo Conversation Flow Portal</h1>
+                        <p class="hero-sub">Day 3–5 Tasks ・ Ask → Listen → React → Add → Ask Again</p>
+                    </div>
+                    <button class="toggle-btn" id="themeToggle">
+                        <span class="icon">🌙</span><span class="label">Dark</span>
+                    </button>
+                </div>
+                <div class="hero-tagline">
+                    <span class="emoji">💬</span>
+                    <span>「はい・いいえ」で終わらない1対1英会話。<b>スモールトークの型</b>で会話をつなげよう。</span>
+                </div>
+                <p class="hero-note">
+                    ✅ 生徒には「<b>STEP 1（ASK）＋ STEP 3（REACT）＋ STEP 4（ADD）だけでもOK</b>」と伝えると、
+                    話すハードルが下がり、Engooレッスンが楽になります。
+                </p>
+            </div>
+        </header>
+        <main class="grid">
+            <article class="card">
+                <div class="card-day-pill">DAY 3</div>
+                <div class="card-topic">Hometown</div>
+                <p class="card-sub">
+                    地元について質問 → リアクション → 自分のことを少し話す。天気・食べ物・有名な場所など、基本トピックの会話練習。
+                </p>
+                <div class="card-taglist">
+                    <span class="chip">Hometown</span><span class="chip">Basic Q&amp;A</span><span class="chip">Warm-up</span>
+                </div>
+                <div class="card-footer">
+                    <span class="card-level">Level: A1–A2 / Guided</span>
+                    <a class="card-link" href="day3_hometown.html"><span class="icon">➡️</span><span>Open Day 3</span></a>
+                </div>
+            </article>
+            <article class="card">
+                <div class="card-day-pill">DAY 4</div>
+                <div class="card-topic">Sports</div>
+                <p class="card-sub">
+                    スポーツの好み・経験・危険なスポーツ・チームか個人かなど、話題が広げやすいトピックを5ステップでサポート。
+                </p>
+                <div class="card-taglist">
+                    <span class="chip">Sports</span><span class="chip">Experience</span><span class="chip">Opinion</span>
+                </div>
+                <div class="card-footer">
+                    <span class="card-level">Level: A1–A2 / With examples</span>
+                    <a class="card-link" href="day4_sports.html"><span class="icon">🏀</span><span>Open Day 4</span></a>
+                </div>
+            </article>
+            <article class="card">
+                <div class="card-day-pill">DAY 5</div>
+                <div class="card-topic">Entertainment</div>
+                <p class="card-sub">
+                    デバイス・映画・ドラマ・週末の過ごし方・安く楽しむ方法・なくせないエンタメなど、生徒のリアルな生活につながる会話テーマ。
+                </p>
+                <div class="card-taglist">
+                    <span class="chip">Movies &amp; TV</span><span class="chip">Free time</span><span class="chip">Daily Life</span>
+                </div>
+                <div class="card-footer">
+                    <span class="card-level">Level: A1–A2 / High support</span>
+                    <a class="card-link" href="day5_entertainment.html"><span class="icon">🎬</span><span>Open Day 5</span></a>
+                </div>
+            </article>
+        </main>
+        <p class="bottom-note">
+            💡 Teacher memo: 「まずは1枚のカードだけでOK」と伝えると、プレッシャーが減り、その後「もう1つやってみたい」と言いやすくなります。
+        </p>
+    </div>
+    <script>
+        const toggleBtn=document.getElementById('themeToggle');
+        const body=document.body;
+        function setTheme(isDark){
+            if(isDark){
+                body.classList.add('dark');
+                toggleBtn.querySelector('.icon').textContent='☀️';
+                toggleBtn.querySelector('.label').textContent='Light';
+                localStorage.setItem('engoo_portal_theme','dark');
+            }else{
+                body.classList.remove('dark');
+                toggleBtn.querySelector('.icon').textContent='🌙';
+                toggleBtn.querySelector('.label').textContent='Dark';
+                localStorage.setItem('engoo_portal_theme','light');
+            }
+        }
+        const saved=localStorage.getItem('engoo_portal_theme');
+        if(saved==='dark'){setTheme(true);}
+        toggleBtn.addEventListener('click',()=>{
+            setTheme(!body.classList.contains('dark'));
+        });
+    </script>
+</body>
+</html>
